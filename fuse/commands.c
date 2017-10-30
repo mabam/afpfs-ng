@@ -35,7 +35,7 @@
 #ifdef __linux
 #define FUSE_DEVICE "/dev/fuse"
 #else
-#define FUSE_DEVICE "/dev/fuse0"
+#define FUSE_DEVICE "/dev/osxfuse0"
 #endif
 
 

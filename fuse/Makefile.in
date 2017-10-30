@@ -32,7 +32,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = afpfsd$(EXEEXT) mount_afp$(EXEEXT)
+bin_PROGRAMS = afpfsd$(EXEEXT) mount_afp2$(EXEEXT)
 subdir = fuse
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -52,11 +52,11 @@ afpfsd_DEPENDENCIES = $(top_builddir)/lib/libafpclient.la
 afpfsd_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(afpfsd_CFLAGS) $(CFLAGS) \
 	$(afpfsd_LDFLAGS) $(LDFLAGS) -o $@
-am_mount_afp_OBJECTS = mount_afp-client.$(OBJEXT)
-mount_afp_OBJECTS = $(am_mount_afp_OBJECTS)
-mount_afp_DEPENDENCIES = $(top_builddir)/lib/libafpclient.la
-mount_afp_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(mount_afp_CFLAGS) \
+am_mount_afp2_OBJECTS = mount_afp2-client.$(OBJEXT)
+mount_afp2_OBJECTS = $(am_mount_afp2_OBJECTS)
+mount_afp2_DEPENDENCIES = $(top_builddir)/lib/libafpclient.la
+mount_afp2_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(mount_afp2_CFLAGS) \
 	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I. -I$(top_builddir)@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -70,8 +70,8 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(afpfsd_SOURCES) $(mount_afp_SOURCES)
-DIST_SOURCES = $(afpfsd_SOURCES) $(mount_afp_SOURCES)
+SOURCES = $(afpfsd_SOURCES) $(mount_afp2_SOURCES)
+DIST_SOURCES = $(afpfsd_SOURCES) $(mount_afp2_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -112,7 +112,7 @@ INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LDFLAGS = @LDFLAGS@
 LIBFUSE_LDFLAGS = @LIBFUSE_LDFLAGS@
 LIBOBJS = @LIBOBJS@
-LIBS = @LIBS@
+LIBS = @LIBS@ -liconv
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
@@ -183,12 +183,12 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-mount_afp_SOURCES = client.c
-mount_afp_CFLAGS = -I$(top_srcdir)/include -D_FILE_OFFSET_BITS=64 @CFLAGS@
-mount_afp_LDADD = $(top_builddir)/lib/libafpclient.la
+mount_afp2_SOURCES = client.c
+mount_afp2_CFLAGS = -I$(top_srcdir)/include -D_FILE_OFFSET_BITS=64 @CFLAGS@
+mount_afp2_LDADD = $(top_builddir)/lib/libafpclient.la
 afpfsd_SOURCES = commands.c daemon.c fuse_int.c fuse_error.c
-afpfsd_LDADD = $(top_builddir)/lib/libafpclient.la -lfuse
-afpfsd_LDFLAGS = -export-dynamic -lfuse
+afpfsd_LDADD = $(top_builddir)/lib/libafpclient.la /usr/local/lib/libosxfuse.la
+afpfsd_LDFLAGS = -export-dynamic /usr/local/lib/libosxfuse.la
 afpfsd_CFLAGS = -I$(top_srcdir)/include -D_FILE_OFFSET_BITS=64 @CFLAGS@
 all: all-am
 
@@ -254,9 +254,9 @@ clean-binPROGRAMS:
 afpfsd$(EXEEXT): $(afpfsd_OBJECTS) $(afpfsd_DEPENDENCIES) 
 	@rm -f afpfsd$(EXEEXT)
 	$(afpfsd_LINK) $(afpfsd_OBJECTS) $(afpfsd_LDADD) $(LIBS)
-mount_afp$(EXEEXT): $(mount_afp_OBJECTS) $(mount_afp_DEPENDENCIES) 
-	@rm -f mount_afp$(EXEEXT)
-	$(mount_afp_LINK) $(mount_afp_OBJECTS) $(mount_afp_LDADD) $(LIBS)
+mount_afp2$(EXEEXT): $(mount_afp2_OBJECTS) $(mount_afp2_DEPENDENCIES) 
+	@rm -f mount_afp2$(EXEEXT)
+	$(mount_afp2_LINK) $(mount_afp2_OBJECTS) $(mount_afp2_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -268,7 +268,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/afpfsd-daemon.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/afpfsd-fuse_error.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/afpfsd-fuse_int.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mount_afp-client.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mount_afp2-client.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -347,19 +347,19 @@ afpfsd-fuse_error.obj: fuse_error.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(afpfsd_CFLAGS) $(CFLAGS) -c -o afpfsd-fuse_error.obj `if test -f 'fuse_error.c'; then $(CYGPATH_W) 'fuse_error.c'; else $(CYGPATH_W) '$(srcdir)/fuse_error.c'; fi`
 
-mount_afp-client.o: client.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(mount_afp_CFLAGS) $(CFLAGS) -MT mount_afp-client.o -MD -MP -MF $(DEPDIR)/mount_afp-client.Tpo -c -o mount_afp-client.o `test -f 'client.c' || echo '$(srcdir)/'`client.c
-@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/mount_afp-client.Tpo $(DEPDIR)/mount_afp-client.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='client.c' object='mount_afp-client.o' libtool=no @AMDEPBACKSLASH@
+mount_afp2-client.o: client.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(mount_afp2_CFLAGS) $(CFLAGS) -MT mount_afp2-client.o -MD -MP -MF $(DEPDIR)/mount_afp2-client.Tpo -c -o mount_afp2-client.o `test -f 'client.c' || echo '$(srcdir)/'`client.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/mount_afp2-client.Tpo $(DEPDIR)/mount_afp2-client.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='client.c' object='mount_afp2-client.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(mount_afp_CFLAGS) $(CFLAGS) -c -o mount_afp-client.o `test -f 'client.c' || echo '$(srcdir)/'`client.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(mount_afp2_CFLAGS) $(CFLAGS) -c -o mount_afp2-client.o `test -f 'client.c' || echo '$(srcdir)/'`client.c
 
-mount_afp-client.obj: client.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(mount_afp_CFLAGS) $(CFLAGS) -MT mount_afp-client.obj -MD -MP -MF $(DEPDIR)/mount_afp-client.Tpo -c -o mount_afp-client.obj `if test -f 'client.c'; then $(CYGPATH_W) 'client.c'; else $(CYGPATH_W) '$(srcdir)/client.c'; fi`
-@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/mount_afp-client.Tpo $(DEPDIR)/mount_afp-client.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='client.c' object='mount_afp-client.obj' libtool=no @AMDEPBACKSLASH@
+mount_afp2-client.obj: client.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(mount_afp2_CFLAGS) $(CFLAGS) -MT mount_afp2-client.obj -MD -MP -MF $(DEPDIR)/mount_afp2-client.Tpo -c -o mount_afp2-client.obj `if test -f 'client.c'; then $(CYGPATH_W) 'client.c'; else $(CYGPATH_W) '$(srcdir)/client.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/mount_afp2-client.Tpo $(DEPDIR)/mount_afp2-client.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='client.c' object='mount_afp2-client.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(mount_afp_CFLAGS) $(CFLAGS) -c -o mount_afp-client.obj `if test -f 'client.c'; then $(CYGPATH_W) 'client.c'; else $(CYGPATH_W) '$(srcdir)/client.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(mount_afp2_CFLAGS) $(CFLAGS) -c -o mount_afp2-client.obj `if test -f 'client.c'; then $(CYGPATH_W) 'client.c'; else $(CYGPATH_W) '$(srcdir)/client.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -553,13 +553,13 @@ uninstall-am: uninstall-binPROGRAMS
 
 install-data-hook:
 	mkdir -p $(DESTDIR)/$(mandir)/man1
-	cp mount_afp.1 $(DESTDIR)/$(mandir)/man1
+	cp mount_afp2.1 $(DESTDIR)/$(mandir)/man1
 	cp afpfsd.1 $(DESTDIR)/$(mandir)/man1
 	cp afp_client.1 $(DESTDIR)/$(mandir)/man1
 
 install-exec-hook:
 	rm -f $(DESTDIR)$(bindir)/afp_client
-	$(LN_S) mount_afp $(DESTDIR)$(bindir)/afp_client
+	$(LN_S) mount_afp2 $(DESTDIR)$(bindir)/afp_client
 	cp afpfs $(DESTDIR)$(bindir)/afpfs
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

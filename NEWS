@@ -23,7 +23,7 @@ What is new in afpfs-ng-0.8.1, March 8, 2008
 1. Read only support
 
 You can mount volumes readonly with:
-mount_afp -o ro afp://username:password@hostname/volumename /mountpoint
+mount_afp2 -o ro afp://username:password@hostname/volumename /mountpoint
 
 Per request from various people.
 
@@ -71,7 +71,7 @@ A simple tool to get the status information of a server without logging in.
 2. FUSE client improvements
 
 Continuation of FUSE client development, including the introduction of a new tool
-called mount_afp, which has the same syntax as in Mac OS X.  Better status and 
+called mount_afp2, which has the same syntax as in Mac OS X.  Better status and 
 post-deployment debugging, proper forced or unforced exit and other bugs.
 
 

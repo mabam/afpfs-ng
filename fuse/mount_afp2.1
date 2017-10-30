@@ -21,7 +21,7 @@
 .\"
 .\" ****************************************
 .\" *
-.\" *  mount_afp [-o options] [-i] host[:port][/path] node
+.\" *  mount_afp2 [-o options] [-i] host[:port][/path] node
 .\" *
 .\" *  Created by randall on Wed May 8 2002.
 .\" *
@@ -31,14 +31,14 @@
 .\" *  Required macros
 .\" ****************************************
 .Dd Feb 1, 2008
-.Dt MOUNT_AFP 8
+.Dt MOUNT_AFP2 8
 .Os Mac\ OS\ X
 .\"
 .\" ****************************************
 .\" *  NAME section
 .\" ****************************************
 .Sh NAME
-.Nm mount_afp
+.Nm mount_afp2
 .Nd mount an afp (AppleShare) filesystem using FUSE
 .\"
 .\" ****************************************
@@ -116,20 +116,20 @@ The following example illustrates how to mount the afp volume
 server.company.com/volumename/ at the mount point /Volumes/mntpnt:
 .Bd -literal -offset indent
 mkdir /Volumes/mntpnt
-mount_afp afp://username:userpass@server.company.com/volumename/ /Volumes/mntpnt
+mount_afp2 afp://username:userpass@server.company.com/volumename/ /Volumes/mntpnt
 
 .Ed
 This example shows the proper url to use to mount the volume guestVolume from
 the afp server myserver as guest:
 .Bd -literal -offset indent
 mkdir /Volumes/guest
-mount_afp "afp://;AUTH=No%20User%20Authent@myserver/guestVolume" /Volumes/guest
+mount_afp2 "afp://;AUTH=No%20User%20Authent@myserver/guestVolume" /Volumes/guest
 
 The following shows how to use a username of "user:name" and password of "p@ssword":
 server.company.com/volumename/ at the mount point /Volumes/mntpnt:
 .Bd -literal -offset indent
 mkdir /Volumes/mntpnt
-mount_afp afp://user::name:p@@ssword@server.company.com/volumename/ /Volumes/mntpnt
+mount_afp2 afp://user::name:p@@ssword@server.company.com/volumename/ /Volumes/mntpnt
 
 .Ed
 .Ed
@@ -137,7 +137,7 @@ This example shows the proper url to use to mount the volume myVolume from
 the afp server myserver using Kerberos authentication:
 .Bd -literal -offset indent
 mkdir /Volumes/myVolume
-mount_afp "afp://;AUTH=Client%20Krb%20v2@myserver/myVolume" /Volumes/myVolume
+mount_afp2 "afp://;AUTH=Client%20Krb%20v2@myserver/myVolume" /Volumes/myVolume
 
 .Ed
 .\"
@@ -158,7 +158,7 @@ command first appeared Mac OS X version 10.0. Kerberos authentication was added 
 .\"
 .\" ****************************************
 .\" * RETURN VALUES section
-.\" * (errors that mount_afp could return)
+.\" * (errors that mount_afp2 could return)
 .\" ****************************************
 .Sh RETURN VALUES
 .Bl -tag -width Er

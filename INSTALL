@@ -47,7 +47,7 @@ details, run it with the '-d' option to see detailed debug info.
 
 To mount a filesystem:
 
-mount_afp "afp://username:password@servername/volumename" <mountpoint>
+mount_afp2 "afp://username:password@servername/volumename" <mountpoint>
 
 After this, you should be able to access files on <mountpoint>.
 

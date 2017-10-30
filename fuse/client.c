@@ -368,12 +368,12 @@ static int do_mount(int argc, char ** argv)
         return 0;
 }
 
-static void mount_afp_usage(void)
+static void mount_afp2_usage(void)
 {
-	printf("Usage:\n     mount_afp [-o volpass=password] <afp url> <mountpoint>\n");
+	printf("Usage:\n     mount_afp2 [-o volpass=password] <afp url> <mountpoint>\n");
 }
 
-static int handle_mount_afp(int argc, char * argv[])
+static int handle_mount_afp2(int argc, char * argv[])
 {
 	struct afp_server_mount_request * req = (void *) outgoing_buffer+1;
 	unsigned int uam_mask=default_uams_mask();
@@ -382,7 +382,7 @@ static int handle_mount_afp(int argc, char * argv[])
 	int readonly=0;
 
 	if (argc<2) {
-		mount_afp_usage();
+		mount_afp2_usage();
 		return -1;
 	}
 	if (strncmp(argv[1],"-o",2)==0) {
@@ -567,8 +567,8 @@ int main(int argc, char *argv[])
 
 	volume.server=NULL;
 
-	if (strstr(argv[0],"mount_afp")) {
-		if (handle_mount_afp(argc,argv)<0)
+	if (strstr(argv[0],"mount_afp2")) {
+		if (handle_mount_afp2(argc,argv)<0)
 		return -1;
 	}
 	else if (prepare_buffer(argc,argv)<0)

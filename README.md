@@ -1,98 +1,59 @@
-## Apple Filing Protocol Library - afpfs-ng - libafpclient
+## afpfs-ng for macOS / OS X
 
 ### Description
 
-AFPFS is a client implementation of the Apple Filing Protocol written in C which
-can be used to access AFP shares exposed by multiple devices, notably Mac OS X
-computers, linux devices exporting shares with netatalk, Apple Airport and 
-Time Capsule products as well as other NAS devices from various vendors.
+macOS / OS X ships with the ability to mount volumes via AFP. However, OS X 10.6 and newer are not capable of AFP version 2.x or older which is needed to network with Classic MacOS (7.6 to 9.2 via IP).
+
+This version of afpfs-ng is based on Simon Vetter's version. It has fixes 'hacked in' to make it work with Fuse for macOS / OSXFUSE on macOS / OS X. As a consequence, it does not work with Fuse for Linux.
+
+It is of use for you if you emulate Classic MacOS, e.g. using SheepShaver or QEMU. And of course if you own an old Macintosh you want to exchange files with.
+
+macOS / OS X already makes use of the 'mount_afp' command. Thus in this version of afpfs-ng that command has been changed to 'mount_afp2' (to indicate it is for use with AFP v. 2.x).
 
 
-### Changelog
+### Prerequesites
 
-This is afpfs-ng-0.8.2, it brings IPV6 support and includes many bugfixes.
-Read NEWS for more details.
+Download and install Fuse for macOS from https://osxfuse.github.io/ (v. 3.7.1 as of writing this). Make sure to also select the Fuse compatibility layer during installation.
 
 
 ### Installation
 
-Pretty standard unix stuff:
+AFP up to v. 2.x does not offer password encryption which is why we simply disable it rather than installing gcrypt on macOS / OS X first:
 ```bash
-./configure && make && sudo make install && echo 'done!'
+./configure --disable-gcrypt --enable-fuse
+```
+```bash
+make
+```
+```bash
+sudo make install
 ```
 
-Use --disable-fuse and/or --disable-gcrypt if your system cannot meet those dependancies.
-(note that disabling gcrypt will prevent you from using login/password auth.)
-
-The command line tool needs ncurses-dev and libreadline-dev to compile. Install them
-with sudo apt-get install ncurses-dev libreadline-dev on ubuntu/debian.
-
-### Usage
-
-You can either use afpfs to mount an AFP share with fuse or with the command-line client.
-
-#### fuse
-
-Mount the time_travel volume from delorean.local (in this example, my time capsule's hostname)
-on /mnt/timetravel without authentication:
-
+Also, I couldn't figure how to make the fuse components compile automatically on macOS / OS X. This is how to do that manually:
 ```bash
-$ mount_afp afp://delorean.local/time_travel /mnt/timetravel
+cd fuse
+```
+```bash
+make
+```
+```bash
+sudo make install
 ```
 
-Same, with authentication:
 
+### Usage, credits and license
+
+Don't forget to load Fuse for macOS first:
 ```bash
-$ mount_afp afp://simon:mypassword@delorean.local/time_travel /mnt/timetravel
+/Library/Filesystems/osxfuse.fs/Contents/Resources/load_osxfuse
 ```
+See README.old for examples on commands. But mind the change to 'mount_afp2'.
 
-Same, with authentication, forcing the UAM of your choice (usually not needed):
+There you can also find information on the license and credits.
 
-```bash
-$ mount_afp afp://simon;AUTH=DHX2:mypassword@delorean.local/time_travel /mnt/timetravel
-```
-
-Unmount the volume:
-
-```bash
-$ fusermount -u /mnt/timetravel
-```
-
-#### command line client
-
-Open volume time_travel on delorean.local:
-
-```bash
-$ afpcmd afp://simon:mypassword@delorean.local/time_travel
-```
-
-Connect anonymously to delorean.local, list all available volumes:
-
-```bash
-$ afpcmd afp://simon:mypassword@delorean.local/
-```
-
-cd to change directories, ls to list, get file to retrieve file, put file to put file...
-and help for a list of supported commands.
+Credits for this macOS / OS X version goes to 'adespoton' for his guidance.
 
 
-### Credits and license
+### Links / further reading
 
-This is a fork of the original afpfs-ng project that has gone unmaintained
-for quite some time. It is so far the only available open source AFP client.
-
-This repository includes many patches collected by the XBMC project
-(www.xbmc.org) as well as mine, in a bid to improve stability, performance and
-to implement new features.
-
-Check AUTHORS for a somewhat complete list of contributors.
-
-The original afpfs-ng webiste can be found at https://sites.google.com/site/alexthepuffin/home
-
-This project retains the original author's license and is distributed under the GPL.
-
-
-### Feedback and patches
-
-Feel free to send your feedback/patches/flames at simon (dot) vetter (at) gmx.com .
-
+Information on the background and process of porting afpfs-ng to macOS / OS X can be found at http://emaculation.com/forum/viewtopic.php?f=34&p=57993#p57806 . Feel free to join the forum!
