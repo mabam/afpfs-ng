@@ -20,7 +20,7 @@
 
 #include "afpfs-ng/afp.h"
 
-#include <usr/local/include/fuse.h>
+#include </usr/local/include/fuse.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
