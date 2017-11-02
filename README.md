@@ -47,7 +47,7 @@ Don't forget to load Fuse for macOS first:
 ```bash
 /Library/Filesystems/osxfuse.fs/Contents/Resources/load_osxfuse
 ```
-See README.old for examples on commands. But mind the change to 'mount_afp2'.
+See README_old.md for examples on commands. But mind the change to 'mount_afp2'.
 
 There you can also find information on the license and credits.
 
