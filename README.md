@@ -13,7 +13,7 @@ macOS / OS X already makes use of the 'mount_afp' command. Thus in this version 
 
 ### Prerequesites
 
-Download and install Fuse for macOS from https://osxfuse.github.io/ (v. 3.7.1 as of writing this). Make sure to also select the Fuse compatibility layer during installation.
+Download and install Fuse for macOS from https://osxfuse.github.io/ (v. 3.7.1 as of writing this). The Fuse compatibility layer is NOT required.
 
 
 ### Installation
