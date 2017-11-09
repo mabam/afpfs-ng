@@ -18,7 +18,7 @@ Download and install Fuse for macOS from https://osxfuse.github.io/ (v. 3.7.1 as
 
 ### Installation
 
-Either use the .pkg installer at https://c.web.de/@337526389169198226/qsvK6y4KQ-uVfzdGsiNUyg or compile yourself as follows:
+Either use the .pkg installer at https://github.com/mabam/afpfs-ng-OSX/releases or compile yourself as follows:
 
 AFP up to v. 2.x does not offer password encryption which is why we simply disable it rather than installing gcrypt on macOS / OS X first:
 ```bash
