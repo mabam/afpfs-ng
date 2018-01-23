@@ -45,7 +45,10 @@ sudo make install
 
 ### Usage, credits and license
 
-Don't forget to load Fuse for macOS first:
+See https://github.com/mabam/afpfs-ng-OSX/releases for a version with GUI.
+See https://emaculation.com/forum/viewtopic.php?f=34&p=58790#p58790 for some main issues.
+
+If you prefer using the shell, don't forget to load Fuse for macOS first:
 ```bash
 /Library/Filesystems/osxfuse.fs/Contents/Resources/load_osxfuse
 ```
