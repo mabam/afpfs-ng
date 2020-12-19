@@ -79,7 +79,7 @@ case $host in
 		AC_CHECK_LIB([fuse], [fuse_main])
 		CFLAGS=$old_cflags
 		CPPFLAGS=$old_cppflags
-		LIBFUSE_LDFLAGS="/usr/local/lib/libosxfuse.la"
+		LIBFUSE_LDFLAGS="/usr/local/lib/libfuse.la"
 		AC_SUBST(LIBFUSE_LDFLAGS)
 		AM_CONDITIONAL(HAVE_LIBFUSE, true)
 	fi

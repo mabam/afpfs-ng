@@ -21824,13 +21824,13 @@ echo "$as_me: error: FUSE is not installed.  To build without fuse, configure wi
    { (exit 1); exit 1; }; }
 		fi
 
-{ echo "$as_me:$LINENO: checking for fuse_main in /usr/local/lib/libosxfuse.la" >&5
-echo $ECHO_N "checking for fuse_main in /usr/local/lib/libosxfuse.la... $ECHO_C" >&6; }
+{ echo "$as_me:$LINENO: checking for fuse_main in /usr/local/lib/libfuse.la" >&5
+echo $ECHO_N "checking for fuse_main in /usr/local/lib/libfuse.la... $ECHO_C" >&6; }
 if test "${ac_cv_lib_fuse_fuse_main+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   ac_check_lib_save_LIBS=$LIBS
-LIBS="/usr/local/lib/libosxfuse.la  $LIBS"
+LIBS="/usr/local/lib/libfuse.la  $LIBS"
 cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -21890,13 +21890,13 @@ if test $ac_cv_lib_fuse_fuse_main = yes; then
 #define HAVE_LIBFUSE 1
 _ACEOF
 
-  LIBS="/usr/local/lib/libosxfuse.la $LIBS"
+  LIBS="/usr/local/lib/libfuse.la $LIBS"
 
 fi
 
 		CFLAGS=$old_cflags
 		CPPFLAGS=$old_cppflags
-		LIBFUSE_LDFLAGS="/usr/local/lib/libosxfuse.la"
+		LIBFUSE_LDFLAGS="/usr/local/lib/libfuse.la"
 
 		 if true; then
   HAVE_LIBFUSE_TRUE=
